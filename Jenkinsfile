@@ -7,10 +7,10 @@ pipeline {
             steps {
                 sh '''
                 echo "Stopping old containers..."
-                docker-compose down || true
+                docker build -t test .|| true
 
                 echo "Building and starting containers..."
-                docker-compose up -d --build
+                docker run -d -p 80:80 --name test test
                 '''
             }
         }
