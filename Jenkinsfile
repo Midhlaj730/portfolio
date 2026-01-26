@@ -3,13 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                // Code is pulled automatically when webhook triggers
-                checkout scm
-            }
-        }
-
         stage('Build & Deploy Containers') {
             steps {
                 sh '''
