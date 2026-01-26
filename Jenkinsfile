@@ -2,26 +2,18 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Build & Deploy Containers') {
+        stage('Clone Repo') {
             steps {
-                sh '''
-                echo "Stopping old containers..."
-                docker build -t test .|| true
-
-                echo "Building and starting containers..."
-                docker run -d -p 80:80 --name test test
-                '''
+                git 'https://github.com/YOUR_USERNAME/portfolio-devops.git'
             }
         }
-    }
 
-    post {
-        success {
-            echo "✅ Deployment successful via GitHub Webhook"
-        }
-        failure {
-            echo "❌ Deployment failed"
+        stage('Build & Deploy') {
+            steps {
+                sh 'docker-compose down || true'
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
+            }
         }
     }
 }
