@@ -1,10 +1,15 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
     stages {
-        stage('Clone Repo') {
+
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/portfolio.git'
+                checkout scm
             }
         }
 
@@ -14,6 +19,15 @@ pipeline {
                 sh 'docker-compose build'
                 sh 'docker-compose up -d'
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Deployment Successful!"
+        }
+        failure {
+            echo "❌ Deployment Failed!"
         }
     }
 }
